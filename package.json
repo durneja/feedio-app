@@ -4,7 +4,7 @@
   "description": "Scheduler project to trigger price update function for Feedio price feed providers",
   "bin": "bin/createNodejsApp.js",
   "main": "src/index.js",
-  "repository": "",
+  "repository": "https://github.com/durneja/feedio-scheduler.git",
   "author": "durneja <kinshuk.kar@gmail.com>",
   "license": "MIT",
   "engines": {
