@@ -1,0 +1,25 @@
+name: Deploy Scheduler [Github-Node-DO]
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: SSH and deploy node app
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          cd ~/server/feedio-scheduler
+          git pull origin master
+          npm install --production
+          pm2 restart ecosystem.config.json
