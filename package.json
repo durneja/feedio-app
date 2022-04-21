@@ -36,7 +36,8 @@
     "feed",
     "crypto",
     "crypto-feed",
-    "scheduler"
+    "scheduler",
+    "cron-job"
   ],
   "dependencies": {
     "@cityofzion/neon-js": "^5.0.0",
