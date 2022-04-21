@@ -13,6 +13,8 @@ const { authLimiter } = require('./middlewares/rateLimiter');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
+const cron = require('node-cron');
+const jobs = require('./jobs');
 
 const app = express();
 
@@ -63,5 +65,10 @@ app.use(errorConverter);
 
 // handle error
 app.use(errorHandler);
+
+var task = cron.schedule('* * * * *', () =>  {
+  jobs.trigger.entry();
+});
+task.start();
 
 module.exports = app;

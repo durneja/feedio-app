@@ -1,14 +1,16 @@
 {
   "apps": [
     {
-      "name": "app",
+      "name": "feedio-scheduler",
       "script": "src/index.js",
       "instances": 1,
       "autorestart": true,
       "watch": false,
       "time": true,
       "env": {
-        "NODE_ENV": "production"
+        "NODE_ENV": "production",
+        "MONGODB_URL": "mongodb://127.0.0.1:27017/fdio-scheduler",
+        "JWT_SECRET": "durneja123"
       }
     }
   ]
