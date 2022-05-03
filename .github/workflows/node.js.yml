@@ -1,4 +1,4 @@
-name: Deploy Scheduler [Github-Node-DO]
+name: Feedio App [Github-Node-DO]
 
 on:
   push:
@@ -19,7 +19,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.SSH_PORT }}
         script: |
-          cd ~/server/feedio-scheduler
+          cd ~/server/feedio-app
           git pull origin master
           npm install --production
           pm2 restart ecosystem.config.json
