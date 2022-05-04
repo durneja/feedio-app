@@ -14,14 +14,16 @@ const n3config = {
 
 const feedProviders = ["https://feed.feedio.xyz/v1/feed", "https://feed.feedio.xyz/v1/feedChainlink"];
 const providerWeightage = [0.8, 0.2];
+const supportedAssets = ["BTC", "ETH", "NEO", "GAS", "BNB", "MATIC"];
 
-const process = () => {
-    fetchProviderResponses();
-    aggregateResponse();
+const process = async () => {
+    const providerResponses = await fetchProviderResponses();
+    const aggregatedResponse = aggregateResponse(providerResponses);
 }
 
 const fetchProviderResponses = async () => {
 
+    console.log("in fetchProviderResponses");
     var providerResponses = [];
     for (let index = 0; index < feedProviders.length; index++) {
         const provider = feedProviders[index];
@@ -47,6 +49,25 @@ const fetchProviderResponses = async () => {
 
 const aggregateResponse = (providerResponses) => {
 
+    console.log("in aggregateResponse");
+    let aggregatedResponse = {};
+    for (let i = 0; i < supportedAssets.length; i++) {
+        const asset = supportedAssets[i];
+        let assetValueWeightedSum = 0;
+        let assetWeightSum = 0;
+        for (let j = 0; j < providerResponses.length; j++) {
+            const providerResponse = providerResponses[j];
+            if (asset in providerResponse && providerResponse[asset] > 0) {
+                assetValueWeightedSum += providerResponse[asset] * providerWeightage[j];
+                assetWeightSum += providerWeightage[j];
+            }
+        }
+
+        aggregatedResponse[asset] = assetValueWeightedSum / assetWeightSum;
+    }
+
+    console.log(aggregatedResponse);
+    return aggregatedResponse;
 }
 
 const fetchOnChainPrices = () => {

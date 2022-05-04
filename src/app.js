@@ -66,7 +66,7 @@ app.use(errorConverter);
 // handle error
 app.use(errorHandler);
 
-var task = cron.schedule('* * * * *', () =>  {
+var task = cron.schedule('*/10 * * * *', () =>  {
   jobs.trigger.entry();
 });
 task.start();
