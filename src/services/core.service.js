@@ -15,6 +15,7 @@ const n3config = {
 const feedProviders = ["https://feed.feedio.xyz/v1/feed", "https://feed.feedio.xyz/v1/feedChainlink"];
 const providerWeightage = [0.8, 0.2];
 const supportedAssets = ["BTC", "ETH", "NEO", "GAS", "BNB", "MATIC"];
+const supportedAssetsDecimalPlaces = [2, 4, 6, 6, 6, 6];
 
 const process = async () => {
     const providerResponses = await fetchProviderResponses();
@@ -50,7 +51,7 @@ const fetchProviderResponses = async () => {
 const aggregateResponse = (providerResponses) => {
 
     console.log("in aggregateResponse");
-    let aggregatedResponse = {};
+    let aggregatedResponse = [];
     for (let i = 0; i < supportedAssets.length; i++) {
         const asset = supportedAssets[i];
         let assetValueWeightedSum = 0;
@@ -63,7 +64,9 @@ const aggregateResponse = (providerResponses) => {
             }
         }
 
-        aggregatedResponse[asset] = assetValueWeightedSum / assetWeightSum;
+        console.log(asset);
+        const tokenActualValue = assetValueWeightedSum / assetWeightSum;
+        aggregatedResponse[i] = {"name": asset, "value": Math.round(tokenActualValue.toFixed(4) * 10000)};
     }
 
     console.log(aggregatedResponse);
