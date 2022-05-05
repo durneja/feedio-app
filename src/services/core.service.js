@@ -50,7 +50,6 @@ const fetchProviderResponses = async () => {
 
 const aggregateResponse = (providerResponses) => {
 
-    console.log("in aggregateResponse");
     let aggregatedResponse = [];
     for (let i = 0; i < supportedAssets.length; i++) {
         const asset = supportedAssets[i];
@@ -64,7 +63,6 @@ const aggregateResponse = (providerResponses) => {
             }
         }
 
-        console.log(asset);
         const tokenActualValue = assetValueWeightedSum / assetWeightSum;
         aggregatedResponse[i] = {"name": asset, "value": Math.round(tokenActualValue.toFixed(4) * 10000)};
     }
