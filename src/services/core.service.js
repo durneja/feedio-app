@@ -16,8 +16,8 @@ const n3config = {
 
 const feedProviders = ["https://feed.feedio.xyz/v1/feed", "https://feed.feedio.xyz/v1/feedChainlink"];
 const providerWeightage = [0.8, 0.2];
-const supportedAssets = ["BTC", "ETH", "NEO", "GAS", "BNB", "MATIC"];
-const assetDecimalPlaces = [4, 4, 6, 6, 6, 6];
+const supportedAssets = ["BTC", "ETH", "NEO", "GAS", "BNB", "MATIC", "LINK", "ADA", "SOL", "DOT", "UNI"];
+const assetDecimalPlaces = [4, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6];
 
 const process = async () => {
     const providerResponses = await fetchProviderResponses();
@@ -123,18 +123,25 @@ const updatePricesOnChain = (aggregatedResponse) => {
 
 const fetchContractPrice = async (tokenName, config) => {
 
-    const result = await config.rpcClient.invokeFunction(
-          config.feedioScriptHash,
-          "getLatestTokenPrice", [Neon.sc.ContractParam.string(tokenName)],
-          [
-            new Neon.tx.Signer({
-              account: config.account.scriptHash,
-              scopes: Neon.tx.WitnessScope.CalledByEntry,
-            }),
-        ]
-    );
+    let val = 0;
+    try {
+        const result = await config.rpcClient.invokeFunction(
+            config.feedioScriptHash,
+            "getLatestTokenPrice", [Neon.sc.ContractParam.string(tokenName)],
+            [
+              new Neon.tx.Signer({
+                account: config.account.scriptHash,
+                scopes: Neon.tx.WitnessScope.CalledByEntry,
+              }),
+          ]
+      );  
 
-    return JSON.parse(Neon.u.base642utf8(result.stack[0].value));
+      val = JSON.parse(Neon.u.base642utf8(result.stack[0].value));
+    } catch (ex) {
+      val = 0;
+    }
+
+    return val;
 }
 
 const invokeSCFunction = async (account, contract, operation, arguments, config) => {
